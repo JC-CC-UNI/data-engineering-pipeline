@@ -1,6 +1,8 @@
-<img width="5884" height="2848" alt="image" src="https://github.com/user-attachments/assets/4ccecf46-b038-4112-bd57-4ce503eba86f" />
 
 # Streaming data from Kafka to S3 using Kafka Connect
+
+<img width="5884" height="2848" alt="image" src="https://github.com/user-attachments/assets/4ccecf46-b038-4112-bd57-4ce503eba86f" />
+
 
 This uses Docker Compose to run the Kafka Connect worker.
 
@@ -29,7 +31,39 @@ schema-registry   /etc/confluent/docker/run   Up             0.0.0.0:8081->8081/
 zookeeper         /etc/confluent/docker/run   Up             2181/tcp, 2888/tcp, 3888/tcp
 ```
 
-6. Create the Sink connector
+6. Create the Source connector
+
+```bash
+curl -i -X PUT -H "Accept:application/json" \
+-H "Content-Type:application/json" http://localhost:8083/connectors/source-debezium-mssql-unified-multidb/config \
+-d '{
+  "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
+  "tasks.max": "1",
+  "database.hostname": "mssql",
+  "database.port": "1433",
+  "database.user": "sa",
+  "database.password": "Admin123",
+  "database.server.name": "my_unified_sql_server_v3",
+  "database.names": "demo",
+  "topic.prefix": "sqlserver_cdc",
+  "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+  "schema.history.internal.kafka.topic": "dbz_dbhistory.my_unified_sql_server_v3",
+  "database.encrypt": "false",
+  "database.trustServerCertificate": "true",
+  "decimal.handling.mode":"double",
+  "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "key.converter.schemas.enable": "false",
+  "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "value.converter.schemas.enable": "false",
+  "transforms": "routeToTableName",
+  "transforms.routeToTableName.type":"org.apache.kafka.connect.transforms.RegexRouter",
+  "transforms.routeToTableName.regex":"sqlserver_cdc\\.(.*)\\.(.*)\\.(.*)",
+  "transforms.routeToTableName.replacement":"$3"
+}'
+```
+
+
+7. Create the Sink connector
 
 ```bash
 curl -i -X PUT -H "Accept:application/json" \
@@ -69,37 +103,9 @@ curl -i -X PUT -H "Accept:application/json" \
 '
 ```
 
-```bash
-curl -i -X PUT -H "Accept:application/json" \
--H "Content-Type:application/json" http://localhost:8083/connectors/source-debezium-mssql-unified-multidb/config \
--d '{
-  "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
-  "tasks.max": "1",
-  "database.hostname": "mssql",
-  "database.port": "1433",
-  "database.user": "sa",
-  "database.password": "Admin123",
-  "database.server.name": "my_unified_sql_server_v3",
-  "database.names": "demo",
-  "topic.prefix": "sqlserver_cdc",
-  "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
-  "schema.history.internal.kafka.topic": "dbz_dbhistory.my_unified_sql_server_v3",
-  "database.encrypt": "false",
-  "database.trustServerCertificate": "true",
-  "decimal.handling.mode":"double",
-  "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-  "key.converter.schemas.enable": "false",
-  "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-  "value.converter.schemas.enable": "false",
-  "transforms": "routeToTableName",
-  "transforms.routeToTableName.type":"org.apache.kafka.connect.transforms.RegexRouter",
-  "transforms.routeToTableName.regex":"sqlserver_cdc\\.(.*)\\.(.*)\\.(.*)",
-  "transforms.routeToTableName.replacement":"$3"
-}'
-```
 
 Things to customise for your environment:
-+
+
 * `topics` :  the source topic(s) you want to send to S3
 * `key.converter` : match the serialisation of your source data (see https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/[here])
 * `value.converter` : match the serialisation of your source data (see https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/[here])

@@ -13,6 +13,7 @@ This uses Docker Compose to run the Kafka Connect worker.
 
 ```bash
 docker-compose up -d
+```
 
 5. Make sure everything is up and running
 
@@ -26,7 +27,7 @@ kafka-connect     bash -c #                   Up (healthy)   0.0.0.0:8083->8083/
 ksqldb            /usr/bin/docker/run         Up             0.0.0.0:8088->8088/tcp
 schema-registry   /etc/confluent/docker/run   Up             0.0.0.0:8081->8081/tcp
 zookeeper         /etc/confluent/docker/run   Up             2181/tcp, 2888/tcp, 3888/tcp
-
+```
 
 6. Create the Sink connector
 
@@ -66,6 +67,7 @@ curl -i -X PUT -H "Accept:application/json" \
                 "transforms.AddMetadata.timestamp.field":"CreateTime"
         }
 '
+```
 
 ```bash
 curl -i -X PUT -H "Accept:application/json" \
@@ -94,6 +96,7 @@ curl -i -X PUT -H "Accept:application/json" \
   "transforms.routeToTableName.regex":"sqlserver_cdc\\.(.*)\\.(.*)\\.(.*)",
   "transforms.routeToTableName.replacement":"$3"
 }'
+```
 
 Things to customise for your environment:
 +
@@ -108,10 +111,12 @@ If you want to create the data generator and view the data in ksqlDB:
 
 ```bash
 docker exec -it ksqldb ksql http://ksqldb:8088
+```
 
 ```bash
 SHOW TOPICS;
 SHOW CONNECTORS;
 PRINT ORDERS;
+```
 
 '''

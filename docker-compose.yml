@@ -72,7 +72,7 @@ services:
       CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
       CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
-      CONNECT_PLUGIN_PATH: '/usr/share/java,/usr/share/confluent-hub-components/,/usr/share/kafka/plugins,/connectors/'
+      CONNECT_PLUGIN_PATH: '/usr/share/java,/usr/share/confluent-hub-components/,/connectors/'
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
 
@@ -88,7 +88,7 @@ services:
         #
         echo "Installing connector plugins"
         confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:latest
-        confluent-hub install --no-prompt confluentinc/kafka-connect-s3:5.4.1
+        confluent-hub install --no-prompt confluentinc/kafka-connect-s3:latest
         #confluent-hub install --no-prompt mdrogalis/voluble:0.1.0
         #
         echo "Launching Kafka Connect worker"
@@ -163,6 +163,3 @@ services:
       - poc-conectors
 networks:
   poc-conectors:
-
-
-

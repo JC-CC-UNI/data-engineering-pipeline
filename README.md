@@ -111,7 +111,6 @@ Things to customise for your environment:
 * `value.converter` : match the serialisation of your source data (see https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/[here])
 * `transforms` : remove this if you don't want partition and offset added to each message
 
-'''
 
 If you want to create the data generator and view the data in ksqlDB: 
 
@@ -124,5 +123,3 @@ SHOW TOPICS;
 SHOW CONNECTORS;
 PRINT ORDERS;
 ```
-
-'''

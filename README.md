@@ -1,5 +1,6 @@
 <img width="5884" height="2848" alt="image" src="https://github.com/user-attachments/assets/4ccecf46-b038-4112-bd57-4ce503eba86f" />
-= Streaming data from Kafka to S3 using Kafka Connect
+
+# Streaming data from Kafka to S3 using Kafka Connect
 
 This uses Docker Compose to run the Kafka Connect worker.
 
@@ -69,7 +70,12 @@ curl -i -X PUT -H "Accept:application/json" \
                 "transforms.AddMetadata.timestamp.field":"CreateTime"
         }
 '
+----
++
 
++
+[source,javascript]
+----
 curl -i -X PUT -H "Accept:application/json" \
 -H "Content-Type:application/json" http://localhost:8083/connectors/source-debezium-mssql-unified-multidb/config \
 -d '{
@@ -98,6 +104,7 @@ curl -i -X PUT -H "Accept:application/json" \
 }'
 ----
 +
+
 Things to customise for your environment:
 +
 * `topics` :  the source topic(s) you want to send to S3

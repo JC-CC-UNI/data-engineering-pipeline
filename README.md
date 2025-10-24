@@ -9,16 +9,14 @@ This uses Docker Compose to run the Kafka Connect worker.
 3. Update `aws_credentials`
 ** Alternatively, uncomment the `environment` lines for `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` and set the values here instead
 4. Bring the Docker Compose up
-+
-[source,bash]
-----
+
+
+```bash
 docker-compose up -d
-----
 
 5. Make sure everything is up and running
-+
-[source,bash]
-----
+
+```bash
 $ docker-compose ps
      Name                  Command               State                    Ports
 ---------------------------------------------------------------------------------------------
@@ -29,12 +27,10 @@ ksqldb            /usr/bin/docker/run         Up             0.0.0.0:8088->8088/
 schema-registry   /etc/confluent/docker/run   Up             0.0.0.0:8081->8081/tcp
 zookeeper         /etc/confluent/docker/run   Up             2181/tcp, 2888/tcp, 3888/tcp
 
-----
 
 6. Create the Sink connector
-+
-[source,javascript]
-----
+
+```bash
 curl -i -X PUT -H "Accept:application/json" \
     -H  "Content-Type:application/json" http://localhost:8083/connectors/sink-s3-voluble/config \
     -d '
@@ -70,12 +66,8 @@ curl -i -X PUT -H "Accept:application/json" \
                 "transforms.AddMetadata.timestamp.field":"CreateTime"
         }
 '
-----
-+
 
-+
-[source,javascript]
-----
+```bash
 curl -i -X PUT -H "Accept:application/json" \
 -H "Content-Type:application/json" http://localhost:8083/connectors/source-debezium-mssql-unified-multidb/config \
 -d '{
@@ -102,8 +94,6 @@ curl -i -X PUT -H "Accept:application/json" \
   "transforms.routeToTableName.regex":"sqlserver_cdc\\.(.*)\\.(.*)\\.(.*)",
   "transforms.routeToTableName.replacement":"$3"
 }'
-----
-+
 
 Things to customise for your environment:
 +
@@ -116,16 +106,12 @@ Things to customise for your environment:
 
 If you want to create the data generator and view the data in ksqlDB: 
 
-[source,bash]
-----
+```bash
 docker exec -it ksqldb ksql http://ksqldb:8088
-----
 
-[source,sql]
-----
+```bash
 SHOW TOPICS;
 SHOW CONNECTORS;
 PRINT ORDERS;
-----
 
 '''

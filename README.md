@@ -29,6 +29,7 @@ kafka-connect     bash -c #                   Up (healthy)   0.0.0.0:8083->8083/
 ksqldb            /usr/bin/docker/run         Up             0.0.0.0:8088->8088/tcp
 schema-registry   /etc/confluent/docker/run   Up             0.0.0.0:8081->8081/tcp
 zookeeper         /etc/confluent/docker/run   Up             2181/tcp, 2888/tcp, 3888/tcp
+mssql             /opt/mssql/bin/nonr…        Up             0.0.0.0:1433->1433/tcp
 ```
 
 6. Create the Source connector

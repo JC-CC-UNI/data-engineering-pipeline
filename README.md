@@ -1,6 +1,16 @@
 
-# Streaming data from Kafka to S3 using Kafka Connect
+# Data Engineering Pipeline (SQL Server CDC Demo)
 
+This repository contains a lightweight **Change Data Capture (CDC)** demo using **Microsoft SQL Server**, sample datasets, and `docker-compose` to spin up a full SQL Server instance locally.
+
+It is designed for learning and demonstrating:
+
+- How to enable CDC at the database and table level  
+- How to model simple transactional datasets (`CLIENTS` and `ORDERS`)  
+- How to populate a demo database with synthetic data  
+- How to prepare a SQL Server instance as a source for downstream replication or streaming pipelines (Kafka, Debezium, etc.)
+
+---
 <img width="5884" height="2848" alt="image" src="https://github.com/user-attachments/assets/4ccecf46-b038-4112-bd57-4ce503eba86f" />
 
 
